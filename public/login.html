@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login Page</title>
+  <style>
+    body {
+      background-color: aliceblue;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    #login {
+      background-color: wheat;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+    h1 {
+      text-align: center;
+      color: darkblue;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    label {
+      margin: 10px;
+      display: block;
+    }
+    input {
+      width: 100%;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: darkcyan;
+      color: white;
+      border: none;
+      margin-top: 30px;
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: darkslategray;
+    }
+    input:hover {
+      border: none;
+    }
+    a {
+      color: darkgrey;
+      text-decoration: none;
+    }
+    a:hover {
+      color: rgb(240, 143, 143);
+    }
+    #status {
+      margin-top: 15px;
+      font-weight: bold;
+      color: green;
+    }
+    #status.error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div id="login">
+    <h1>Login</h1>
+    <form id="loginForm">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" required /><br />
+
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" required /><br />
+
+      <button type="submit">Submit</button>
+      <p>For a New Account <a href="/sign.html">Register here</a></p>
+    </form>
+
+    <p id="status"></p>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const password = document.getElementById("password").value;
+      const statusEl = document.getElementById("status");
+
+      const res = await fetch("/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, password })
+      });
+
+      const result = await res.json();
+
+      if (res.ok) {
+      window.location.href = "/welcome.html";
+    } else {
+      alert("❌ " + result.message);
+    }
+    });
+  </script>
+</body>
+</html>
